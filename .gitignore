@@ -26,6 +26,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+last_post.num
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -80,6 +81,9 @@ target/
 # IPython
 profile_default/
 ipython_config.py
+
+# PyCharm
+.idea
 
 # pyenv
 .python-version
