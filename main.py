@@ -7,7 +7,7 @@ from time import sleep
 from urllib.request import urlretrieve
 
 from selenium import webdriver
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import SessionNotCreatedException, StaleElementReferenceException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -44,10 +44,13 @@ def setup_driver() -> WebDriver:
     options.add_argument('--start-maximized')
     options.add_argument("--no-sandbox")  # Bypass OS security model
 
-    s = Service(path_to_exec)
+    try:
+        wd = webdriver.Chrome(options=options, service=Service(path_to_exec))
+    except SessionNotCreatedException as exc:
+        raise RuntimeError(exc.msg + "\n\rСкачать новую версию можно по ссылке: "
+                                     "https://chromedriver.chromium.org/downloads")
 
-    # PyCharm doesn't like this string, but it is correct!
-    return webdriver.Chrome(options=options, service=s)
+    return wd
 
 
 def vk_login(loc_driver: WebDriver):
